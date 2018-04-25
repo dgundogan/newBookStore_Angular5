@@ -1,47 +1,53 @@
 package com.bookstore.domain.security;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 @Entity
-public class Role implements Serializable {
+public class Role implements Serializable{
+	
+	private static final long serialVersionUID = 890245234L;
+	
+	@Id
+	private int roleId;
+	
+	private String name;
+	
+	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<UserRole> userRoles = new HashSet<>();
+	
+	public Role(){}
 
-    private static final long serialVersionUID = 124234234234L;
+	public int getRoleId() {
+		return roleId;
+	}
 
-    @Id
-    private int roleId;
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
 
-    private String name;
+	public String getName() {
+		return name;
+	}
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<UserRole> userRoles = new HashSet<>();
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Role(){}
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
+	}
 
-
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<UserRole> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(Set<UserRole> userRoles) {
-        this.userRoles = userRoles;
-    }
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+	
+	
 }

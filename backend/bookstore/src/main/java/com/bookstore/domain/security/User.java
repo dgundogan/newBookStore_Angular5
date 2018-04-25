@@ -11,120 +11,131 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class User implements UserDetails, Serializable {
+public class User implements UserDetails, Serializable{
 
-    private static final long serialVersionUID = 234234234L;
+	private static final long serialVersionUID = 902783495L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="Id", nullable=false, updatable = false)
+	private Long id;
+	
+	private String username;
+	private String password;
+	private String firstName;
+	private String lastName;
+	
+	private String email;
+	private String phone;
+	private boolean enabled = true;
+	
+	@OneToMany(mappedBy = "user", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<UserRole> userRoles = new HashSet<>();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
+	public Long getId() {
+		return id;
+	}
 
-    private String username;
-    private String password;
-    private String firtName;
-    private String lastName;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    private String email;
-    private String phone;
-    private boolean enabled = true;
+	public String getUsername() {
+		return username;
+	}
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<UserRole> userRoles = new HashSet<>();
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
+	public String getPassword() {
+		return password;
+	}
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public String getPhone() {
+		return phone;
+	}
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
-        return null;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
-    public String getFirtName() {
-        return firtName;
-    }
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
+	}
 
-    public void setFirtName(String firtName) {
-        this.firtName = firtName;
-    }
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
+		
+		return authorities;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	
+	
+	
 }
